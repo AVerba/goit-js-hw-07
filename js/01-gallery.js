@@ -15,7 +15,6 @@ const createGallaryItem=({preview,original,description})=>{
         />
       </a>
     </div>`
-    console.log(wrapper.firstElementChild)
     return wrapper.firstElementChild;
 
 }
@@ -28,8 +27,23 @@ const gallaryCard = items.map((item) => createGallaryItem(item));
 ref.append(...gallaryCard);
 }
 
+const fullSizeImageHandler=(e)=>{
+  e.preventDefault();
+  if (!e.target.classList.contains('gallery__image'))
+    return  
+
+  const instance = basicLightbox.create(
+    ` <img src="${e.target.dataset.source}" width="800" height="600" alt="${e.target.alt}"/>`
+  )
+  instance.show()
+
+  galleryRef.addEventListener('keydown', (e)=>{
+    if (e.code === 'Escape') {
+      instance.close()
+    }
+  })
+}
+
 renderGallaryItems(galleryItems, galleryRef);
-
-
-console.log(galleryItems);
+galleryRef.addEventListener('click', fullSizeImageHandler)
 
